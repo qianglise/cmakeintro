@@ -17,8 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "LESSON NAME"
-copyright = "2021, The contributors"
+project = "Introduction to CMake"
+copyright = "2024, EuroCC National Competence Centre Sweden"
 author = "The contributors"
 github_user = "ENCCS"
 github_repo_name = ""  # auto-detected from dirname if blank
@@ -44,12 +44,7 @@ extensions = [
 # jupyter_execute_notebooks = "off"
 # jupyter_execute_notebooks = "auto"   # *only* execute if at least one output is missing.
 # jupyter_execute_notebooks = "force"
-nb_execution_mode = "cache"
-
-# https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
-myst_enable_extensions = [
-    "colon_fence",
-]
+jupyter_execute_notebooks = "cache"
 
 # Add any paths that contain templates here, relative to this directory.
 # templates_path = ['_templates']
