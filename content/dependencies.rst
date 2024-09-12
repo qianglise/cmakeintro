@@ -10,7 +10,7 @@ Finding and using dependencies
 
 .. objectives::
 
-   - Learn how to use |find_package|.
+   - Learn how to use ``find_package``.
    - Learn what other detection alternatives exist.
 
 The vast majority of software projects do not happen in a vacuum: they will have
@@ -26,16 +26,16 @@ Finding dependencies
 
 CMake offers a family of commands to find artifacts installed on your system:
 
-- |find_file| to retrieve the full path to a file.
-- |find_library| to find a library, shared or static.
-- |find_package| to find and load settings from an external project.
-- |find_path| to find the directory containing a file.
-- |find_program| to find an executable.
+- ``find_file`` to retrieve the full path to a file.
+- ``find_library`` to find a library, shared or static.
+- ``find_package`` to find and load settings from an external project.
+- ``find_path`` to find the directory containing a file.
+- ``find_program`` to find an executable.
 
-The workhorse of dependency discovery is |find_package|, which will cover your
+The workhorse of dependency discovery is ``find_package``, which will cover your
 needs in almost all use cases.
 
-.. signature:: `find_package<https://cmake.org/cmake/help/latest/command/find_package.html?highlight=find_package#search-procedure>`_
+.. signature:: `find_package <https://cmake.org/cmake/help/latest/command/find_package.html?highlight=find_package#search-procedure>`_
 
    .. code-block:: cmake
 
@@ -60,7 +60,7 @@ We cannot stress this enough: you should **only** use the other commands in the
    modules shipped with CMake work flawlessly and are maintained by the CMake
    developers. This lifts the burden of programming your own dependency
    detection tricks.
-2. |find_package| will set up **imported targets**: targets defined *outside*
+2. ``find_package`` will set up **imported targets**: targets defined *outside*
    your project that you can use with your own targets.  The properties on
    imported targets defines *usage requirements* for the dependencies. A command
    such as:
@@ -84,7 +84,7 @@ consistent usage within a multi-folder project.
 Using ``find_package``
 ++++++++++++++++++++++
 
-When attempting dependency detection with |find_package|, you should make sure that:
+When attempting dependency detection with ``find_package``, you should make sure that:
 
 - A ``Find<PackageName>.cmake`` module exists,
 - Which components, if any, it provides, and
