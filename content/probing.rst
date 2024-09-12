@@ -27,7 +27,7 @@ The most straightforward method is to explicitly run one (or more) child
 process(es) when invoking the ``cmake`` command.  This is achieved with the
 ``execute_process`` command.
 
-.. signature:: ``execute_process``
+.. signature:: `execute_process <https://cmake.org/cmake/help/latest/command/execute_process.html>`_ 
 
    .. code-block:: cmake
 
@@ -62,8 +62,8 @@ command. You **should not** rely on ``execute_process`` to update any artifacts 
 
 .. exercise:: Exercise xx: Find a Python module
 
-   In this exercise, we'll use ``execute_process`` to check whether the `cffi
-   <https://cffi.readthedocs.io/en/latest/index.html>`_ Python module is
+   In this exercise, we'll use `execute_process <https://cmake.org/cmake/help/latest/command/execute_process.html>`_  
+   to check whether the `cffi   <https://cffi.readthedocs.io/en/latest/index.html>`_ Python module is
    installed in your environment. On the command line, you would do:
 
    .. code-block:: bash
@@ -100,7 +100,7 @@ Both cases have real-world examples, such as when using automatically generated
 code. The CMake command ``add_custom_command`` can be used in some of this
 instances.
 
-.. signature:: ``add_custom_command``
+.. signature:: `add_custom_command <https://cmake.org/cmake/help/latest/command/add_custom_command.html>`_ 
 
    .. code-block:: cmake
 

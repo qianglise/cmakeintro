@@ -35,7 +35,7 @@ CMake offers a family of commands to find artifacts installed on your system:
 The workhorse of dependency discovery is ``find_package``, which will cover your
 needs in almost all use cases.
 
-.. signature:: `find_package <https://cmake.org/cmake/help/latest/command/find_package.html?highlight=find_package#search-procedure>`_
+.. signature:: `find_package <https://cmake.org/cmake/help/latest/command/find_package.html>`_
 
    .. code-block:: cmake
 
