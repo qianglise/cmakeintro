@@ -13,10 +13,9 @@ CMake syntax
 
 .. objectives::
 
-   - Learn how to define variables with ``set`` and use them with the ``${}``
-     operator for `variable references <https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variable-references>`_.
-   - Learn the syntax for conditionals in CMake: ``if`` - ``elseif`` - ``else`` - ``endif``
-   - Learn the syntax for loops in CMake: ``foreach``
+   - Learn how to define variables with ``set`` and use them with the ``${}`` operator for `variable references <https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#variable-references>`_.
+   - Learn the syntax for conditionals in CMake: ``if`` - ``elseif`` - ``else`` - ``endif``.
+   - Learn the syntax for loops in CMake: ``foreach``.
    - Learn how CMake structures build artifacts.
    - Learn how to print helpful messages.
    - Learn how to handle user-facing options: ``option`` and the role of CMake cache.
@@ -32,6 +31,7 @@ The CMake DSL
 Remember that the DSL is **case-insensitive**. We will now have a look at its main elements.
 
 
+
 Variables
 +++++++++
 
@@ -40,7 +40,7 @@ These are either CMake- or user-defined variables. You can obtain the list of CM
 
 .. code-block:: bash
 
-   $ cmake --help-variable-list
+   cmake --help-variable-list
 
 You can create a new variable with the ``set`` command:
 
@@ -90,7 +90,8 @@ Help on a specific built-in variable can be obtained with:
 
 .. code-block:: bash
 
-   $ cmake --help-variable PROJECT_BINARY_DIR
+   cmake --help-variable PROJECT_BINARY_DIR
+
 
 
 Commands
@@ -103,7 +104,7 @@ You can find a complete list of available commands with:
 
 .. code-block:: bash
 
-   $ cmake --help-command-list
+   cmake --help-command-list
 
 
 **Functions** and **macros** are built on top of the basic built-in commands and are either CMake- or user-defined. These prove useful to avoid repetition in your CMake scripts.
@@ -118,7 +119,8 @@ Help on a specific built-in command, function or macro can be obtained with:
 
 .. code-block:: bash
 
-   $ cmake --help-command target_link_libraries
+   cmake --help-command target_link_libraries
+
 
 
 Modules
@@ -138,13 +140,13 @@ The full list of built-in modules is available with:
 
 .. code-block:: bash
 
-   $ cmake --help-module-list
+   cmake --help-module-list
 
 Help on a specific built-in module can be obtained with:
 
 .. code-block:: bash
 
-   $ cmake --help-module CMakePrintHelpers
+   cmake --help-module CMakePrintHelpers
 
 
 
@@ -170,10 +172,8 @@ Since *all* variables in CMake are strings, the syntax for ``if`` and ``foreach`
 
 The truth value of the conditions in the ``if`` and ``elseif`` blocks is determined by boolean operators. In the CMake DSL:
 
-- True is any expression evaluating to: ``1``, ``ON``, ``TRUE``, ``YES``, and
-  ``Y``.
-- False is any expression evaluating to: ``0``, ``OFF``, ``FALSE``, ``NO``,
-  ``N``, ``IGNORE``, and ``NOTFOUND``.
+- True is any expression evaluating to: ``1``, ``ON``, ``TRUE``, ``YES``, and  ``Y``.
+- False is any expression evaluating to: ``0``, ``OFF``, ``FALSE``, ``NO``,  ``N``, ``IGNORE``, and ``NOTFOUND``.
 
 
 CMake offers boolean operator for string comparisons, such as ``STREQUAL`` for string equality, and for version comparisons, such as ``VERSION_EQUAL``.
@@ -181,8 +181,7 @@ CMake offers boolean operator for string comparisons, such as ``STREQUAL`` for s
 
 .. callout:: Variable expansions in conditionals
 
-   The ``if`` command expands the contents of variables before evaluating their
-   truth value. See `official documentation <https://cmake.org/cmake/help/latest/command/if.html?highlight=#variable-expansion>`_ for further details.
+   The ``if`` command expands the contents of variables before evaluating their truth value. See `official documentation <https://cmake.org/cmake/help/latest/command/if.html?highlight=#variable-expansion>`_ for further details.
 
 
 .. exercise:: Exercise 2: Conditionals in CMake
@@ -196,11 +195,11 @@ CMake offers boolean operator for string comparisons, such as ``STREQUAL`` for s
 
       .. tab:: C++
 
-         You can find a scaffold project in the ``content/code/02_conditionals-cxx`` folder. A working solution is in the ``solution`` subfolder.
+         You can find a scaffold project in the ``content/code/02_conditionals/cxx`` folder. A working solution is in the ``solution`` subfolder.
 
       .. tab:: Fortran
 
-         You can find a scaffold project in the ``content/code/02_conditionals-f`` folder. A working solution is in the ``solution`` subfolder.
+         You can find a scaffold project in the ``content/code/02_conditionals/fortran`` folder. A working solution is in the ``solution`` subfolder.
 
 
 You can perform the same operation on a collection of items with ``foreach``:
@@ -224,26 +223,32 @@ The list of items is either space- or ;-separated. ``break()`` and ``continue()`
 
    A working solution is in the ``solution`` subfolder.
 
-   It is instructive to browse the build folder for the project:
+   It is instructive to browse the build folder for the project using the ``tree`` command:
 
    .. code-block:: bash
 
-      $ tree -L 2 build
+      ml tree/2.1.1
+      tree -L 2 build
+
+   Then you can get the code structure like this:
+
+   .. code-block:: bash
 
       build
       ├── CMakeCache.txt
       ├── CMakeFiles
-      │   ├── 3.18.4
-      │   ├── cmake.check_cache
-      │   ├── CMakeDirectoryInformation.cmake
-      │   ├── CMakeOutput.log
-      │   ├── CMakeTmp
-      │   ├── compute-areas.dir
-      │   ├── geometry.dir
-      │   ├── Makefile2
-      │   ├── Makefile.cmake
-      │   ├── progress.marks
-      │   └── TargetDirectories.txt
+      │   ├── 3.27.7
+      │   ├── cmake.check_cache
+      │   ├── CMakeConfigureLog.yaml
+      │   ├── CMakeDirectoryInformation.cmake
+      │   ├── CMakeScratch
+      │   ├── compute-areas.dir
+      │   ├── geometry.dir
+      │   ├── Makefile2
+      │   ├── Makefile.cmake
+      │   ├── pkgRedirects
+      │   ├── progress.marks
+      │   └── TargetDirectories.txt
       ├── cmake_install.cmake
       ├── compute-areas
       ├── libgeometry.a
@@ -307,5 +312,4 @@ It should be noted that ``message`` can be a bit awkward to work with, especiall
    - CMake offers a full-fledged DSL which empowers you to write complex ``CMakeLists.txt``.
    - Variables have scoping rules.
    - The structure of the project is mirrored in the build folder.
-
 

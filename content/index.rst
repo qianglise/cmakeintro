@@ -4,14 +4,14 @@ Introduction to CMake
 
 CMake is a language-agnostic, cross-platform build tool and is nowadays the *de facto* standard, with large projects using it to reliably build, test, and deploy their codebases.
 
-CMake is not a build system itself, but it generates another system's build files.
+**CMake is not a build system itself, but it generates another system's build files.**
 
 In this workshop, you will learn
 
 - Write a CMake build system for C/C++ and Fortran projects producing libraries and/or executables.
-- Run tests for your code with `CTest`.
 - Ensure your build system will work on different platforms.
-- (optional) Detect and use external dependencies in your project.
+- Detect and use external dependencies in your project.
+- (optional) Run tests for your code with `CTest`.
 - (optional) Safely and effectively build mixed-language projects (Python+C/C++, Python+Fortran, Fortran+C/C++)
 
 
@@ -20,7 +20,7 @@ In this workshop, you will learn
 
    Before attending this workshop, please make sure that you have access to a computer with a compiler for your favorite programming language and a recent version of CMake.
    
-   If you have access to a supercomputer (e.g. a `NAISS system <https://www.naiss.se/>`_) with a compute allocation you can use that during    the workshop. Any questions on how to use a particular HPC resource should be    directed to the appropriate support desk.
+   If you have access to a supercomputer (e.g. a `NAISS system <https://www.naiss.se/>`_) with a compute allocation you can use that during the workshop. Any practical questions on how to use a particular HPC resource should be directed to the appropriate support desk.
    
    You can also use your own computer for this workshop, provided that it has the necessary tools installed.
 
@@ -42,23 +42,11 @@ In this workshop, you will learn
 
    hello-cmake
    cmake-syntax
-   hello-ctest
    targets
-   .. dependencies
-   .. fetch-content
-   .. python-bindings
    probing
    dependencies
    tips-and-tricks
-
-
-.. toctree::
-   :hidden:
-   :maxdepth: 1
-   :caption: Additional topics
-
-   .. environment
-   .. cxx-fortran
+   additional-topics
 
 
 .. csv-table::
@@ -67,11 +55,11 @@ In this workshop, you will learn
 
    20 min ; :doc:`hello-cmake`
    30 min ; :doc:`cmake-syntax`
-   40 min ; :doc:`hello-ctest`
-   40 min ; :doc:`probing`
-   40 min ; :doc:`targets`
-   35 min ; :doc:`python-bindings`
-   20 min ; :doc:`tips-and-tricks`
+   50 min ; :doc:`targets`
+   30 min ; :doc:`probing`
+   20 min ; :doc:`dependencies` 
+   10 min ; :doc:`tips-and-tricks`
+   10 min ; :doc:`additional-topics`
 
 
 .. toctree::
@@ -79,8 +67,7 @@ In this workshop, you will learn
    :caption: Reference
 
    quick-reference
-   zbibliography
-   guide
+   instructor-guide
 
 
 
@@ -105,12 +92,11 @@ Specifically, this lesson assumes that participants have some prior experience w
 About this course
 -----------------
 
-This lesson material is originally developed by the `EuroCC National Competence Center Sweden (ENCCS) <https://enccs.se/>`_ and taught in the `CMake Workshop <https://enccs.github.io/cmake-workshop/>`_.
-Each lesson episode has clearly defined learning objectives and includes multiple exercises along with solutions, and is therefore also useful for self-learning.
+This lesson material is originally developed by the `EuroCC National Competence Center Sweden (ENCCS) <https://enccs.se/>`_ and taught in the `CMake Workshop <https://enccs.github.io/cmake-workshop/>`_. Each lesson episode has clearly defined learning objectives and includes multiple exercises along with solutions, and is therefore also useful for self-learning.
 
-This material `Introduction to CMake <https://enccs.github.io/intro-cmake/>`_ was adapted from the material used for `CMake Workshop <https://enccs.github.io/cmake-workshop/>`_ and will be use for the `Build Systems Course and Hackathon <https://enccs.se/events/build-systems-course-and-hackathon-2024/>`_.
+This material `Introduction to CMake <https://enccs.github.io/intro-cmake/>`_ was adapted from the lesson materials for `CMake Workshop (ENCCS) <https://enccs.github.io/cmake-workshop/>`_ and `CMake Workshop (CodeRefinery) <https://coderefinery.github.io/cmake-workshop/>`_, and will be use for the `Build Systems Course and Hackathon <https://enccs.se/events/build-systems-course-and-hackathon-2024/>`_.
 
-The lesson material is licensed under `CC-BY-4.0 <https://creativecommons.org/licenses/by/4.0/>`_ and can be reused in any form (with appropriate credit) in other courses and workshops. Instructors who wish to teach this lesson can refer to the :doc:`guide` for practical advice.
+This lesson material is licensed under `CC-BY-4.0 <https://creativecommons.org/licenses/by/4.0/>`_ and can be reused in any form (with appropriate credit) in other courses and workshops. Instructors who wish to teach this lesson can refer to the :doc:`guide` for practical advice.
 
 
 
@@ -123,6 +109,7 @@ There are many free online resources regarding CMake:
 - The `CMake tutorial <https://cmake.org/cmake/help/v3.19/guide/tutorial/index.html#guide:CMake%20Tutorial>`_.
 - The `HEP Software Foundation <https://hsf-training.github.io/hsf-training-cmake-webpage/>`_ training course.
 - The `Building portable code with CMake <https://coderefinery.github.io/cmake/>`_ from the `CodeRefinery <https://coderefinery.org/>`_.
+- The `CMake Workshop <https://coderefinery.github.io/cmake-workshop/>`_ from the `CodeRefinery <https://coderefinery.org/>`_.
 
 
 You can also consult the following books:

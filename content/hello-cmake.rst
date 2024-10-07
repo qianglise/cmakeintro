@@ -13,7 +13,7 @@ From sources to executables
    - Learn what tools are available in the CMake suite.
    - Learn how to write a simple ``CMakeLists.txt``.
    - Learn the difference between **build systems**, **build tools**, and **build system generator**.
-   - Learn to distinguish between *configuration*, *generation*, and **build* time.
+   - Learn to distinguish between *configuration*, *generation*, and *build* time.
  
 
 
@@ -41,6 +41,7 @@ A CMake-based build system:
 - is built on top of well-maintained functionality for automated dependency detection.
 
 
+
 Hello, CMake!
 -------------
 
@@ -53,20 +54,18 @@ Hello, CMake!
 
       .. tab:: C++
 
-         You can find the file with the complete source code in the
-         ``content/code/00_hello-cxx`` folder.
+         You can find the file with the complete source code in the ``content/code/00_hello-world/cxx`` folder.
 
-         .. literalinclude:: code/00_hello-cxx/hello.cpp
+         .. literalinclude:: code/00_hello-world/cxx/hello.cpp
             :language: c++
 
          A working solution is in the ``solution`` subfolder.
 
       .. tab:: Fortran
 
-         You can find the file with the complete source code in the
-         ``content/code/00_hello-f`` folder.
+         You can find the file with the complete source code in the ``content/code/00_hello-world/fortran`` folder.
 
-         .. literalinclude:: code/00_hello-f/hello.f90
+         .. literalinclude:: code/00_hello-world/fortran/hello.f90
             :language: fortran
 
          A working solution is in the ``solution`` subfolder.
@@ -95,21 +94,21 @@ Hello, CMake!
 
       .. code-block:: bash
 
-         $ cmake -S. -Bbuild
+         cmake -S. -Bbuild
 
    6. And finally build our executable:
 
       .. code-block:: bash
 
-         $ cmake --build build
+         cmake --build build
 
 
-Important issues for the ``CMakeLists.txt`` file
-------------------------------------------------
+
+Important issues for ``CMakeLists.txt`` file
+--------------------------------------------
 
 
-1. Any CMake build system will invoke the following commands in its **root**
-   ``CMakeLists.txt``:
+1. Any CMake build system will invoke the following commands in its **root** ``CMakeLists.txt``:
 
    .. signature:: ``cmake_minimum_required``
 
@@ -156,9 +155,10 @@ Important issues for the ``CMakeLists.txt`` file
 
 4. Using CMake you can abstract the generation of the build system and also the invocation of the build tools.
 
+
 .. callout:: Put your ``CMakeLists.txt`` under version control
 
-   All CMake-related files will evolve together with your codebase. It's a good    idea to put them under version control. On the contrary, any of the    *generated* native build-system files, *e.g.* ``Makefile``-s, should not be version-controlled.
+   All CMake-related files will evolve together with your codebase. It's a good idea to put them under `version control <https://coderefinery.github.io/git-intro/>`_. On the contrary, any of the *generated* native build-system files, *e.g.* ``Makefile``-s, should not be version-controlled.
 
 
 .. typealong:: The command-line interface to CMake
@@ -169,7 +169,7 @@ Important issues for the ``CMakeLists.txt`` file
 
    .. code-block:: bash
 
-      $ cmake --help
+      cmake --help
 
    This will output quite a number of options to your screen. We can analyze the last few lines first:
 
@@ -200,39 +200,39 @@ Important issues for the ``CMakeLists.txt`` file
 
    .. code-block:: bash
 
-      $ cmake -S. -Bbuild
+      cmake -S. -Bbuild
 
-   To switch to another generator, we will use the ``-G`` switch:
+   To switch to another generator, we will use the ``-G`` switch (make sure that the Ninja is correctly built before running the command below):
 
    .. code-block:: bash
 
-      $ cmake -S. -Bbuild -GNinja
+      cmake -S. -Bbuild -GNinja
 
    Options to be used at build-system generation are passed with the ``-D`` switch. For example, to change compilers:
 
    .. code-block:: bash
 
-      $ cmake -S. -Bbuild -GNinja -DCMAKE_CXX_COMPILER=clang++
+      cmake -S. -Bbuild -GNinja -DCMAKE_CXX_COMPILER=clang++
 
    Finally, you can access to the full CMake manual with:
 
    .. code-block:: bash
 
-      $ cmake --help-full
+      cmake --help-full
 
    You can also inquire about a specific module, command or variable:
 
    .. code-block:: bash
 
-      $ cmake --help-variable CMAKE_GENERATOR
+      cmake --help-variable CMAKE_GENERATOR
+
 
 
 A complete toolchain
 --------------------
 
 
-The family of tools provided with CMake offers a complete toolchain to manage the development cycle: from sources to build artifacts, testing, and deployment.
-We refer to these stages as *CMake times* and each tool is appropriate at a specific time. In this workshop, we will discuss:
+The family of tools provided with CMake offers a complete toolchain to manage the development cycle: from sources to build artifacts, testing, and deployment. We refer to these stages as *CMake times* and each tool is appropriate at a specific time. In this workshop, we will discuss:
 
 - **CMake time** or **configure time**. This is the stage when ``cmake`` is invoked to parse the ``CMakeLists.txt`` in your project, configure and generate the build system.
 - **Build time**. This is handled by the native build tools, but, as we have seen, these can be effectively wrapped by ``cmake`` itself.
@@ -242,6 +242,7 @@ We refer to these stages as *CMake times* and each tool is appropriate at a spec
    :align: center
 
    You can manage all these stages of a software project's lifetime with tools provided by CMake. This figure shows all these stages (*times*) and which tool is appropriate for each. This figure is reproduced from `CMake Cookbook <https://github.com/dev-cafe/cmake-cookbook>`_ and is licensed under the terms of the `CC-BY-SA <https://creativecommons.org/licenses/by-sa/4.0/legalcode>`_.
+
 
 
 Producing libraries
@@ -280,7 +281,7 @@ You can link libraries into executables with ``target_link_libraries``:
 
       .. tab:: C++
 
-         You can find a scaffold project in the ``content/code/01_libraries-cxx`` folder.
+         You can find a scaffold project in the ``content/code/01_producing-libraries/cxx`` folder.
 
          #. Write a ``CMakeLists.txt`` to compile the source files ``Message.hpp`` and  ``Message.cpp`` into a library. **DO NOT** specify the type of library, shared or static, explicitly.
          #. Add an executable from the ``hello-world.cpp`` source file.
@@ -290,7 +291,7 @@ You can link libraries into executables with ``target_link_libraries``:
 
       .. tab:: Fortran
 
-         You can find a scaffold project in the ``content/code/01_libraries-f`` folder.
+         You can find a scaffold project in the ``content/code/01_producing-libraries/fortran`` folder.
 
          #. Write a ``CMakeLists.txt`` to compile the source files ``message.f90`` into a library. **DO NOT** specify the type of library shared or static, explicitly.
          #. Add an executable from the ``hello-world.f90`` source file.

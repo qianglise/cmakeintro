@@ -96,12 +96,11 @@ A complete list of ``Find<PackageName>.cmake`` can be found from the command-lin
 
    $ cmake --help-module-list | grep "Find"
 
-.. typealong:: Using OpenMP
+.. exercise:: Exercise 10: Using OpenMP
 
    We want to compile the following OpenMP sample code: [#omp]_
 
-
-   .. literalinclude:: code/xx_taskloop/solution/taskloop.cpp
+   .. literalinclude:: code/10_taskloop/taskloop.cpp
       :language: c++
 
    Note the usage of the ``taskloop`` construct, which was introduced in OpenMP
@@ -117,20 +116,15 @@ A complete list of ``Find<PackageName>.cmake`` can be found from the command-lin
    we find that the module provides the components ``C``, ``CXX``, and
    ``Fortran`` and that ``OpenMP::OpenMP_CXX`` target will be provided, if
    detection is successful.
-   Thus, we do the following:
-
-   .. code-block:: cmake
-
-      find_package(OpenMP 4.5 REQUIRED COMPONENTS CXX)
-
-      target_link_libraries(task-loop PRIVATE OpenMP::OpenMP_CXX)
+   The scaffold project is in ``content/code/10_taskloop``. You will need to
+   find the suitable OpenMP libary and link against the imported target.
 
    We can configure and build verbosely. [#verbose]_
    Notice that compiler flags, include directories, and link libraries are properly resolved by CMake.
 
-   You can find the complete working example in ``content/code/xx_taskloop/solution``.
+   You can find the complete working example in the ``solution`` subfolder.
 
-.. exercise:: Exercise 23: Using MPI
+.. exercise:: Exercise 11: Using MPI
 
    In this exercise, you will attempt compiling a "Hello, world" program that
    uses the message passing interface (MPI).
@@ -144,7 +138,7 @@ A complete list of ``Find<PackageName>.cmake`` can be found from the command-lin
 
       .. tab:: C++
 
-         The scaffold project is in ``content/code/xx_mpi-cxx``.
+         The scaffold project is in ``content/code/11_mpi-cxx``.
 
          #. Compile the source file to an executable.
          #. Link against the MPI imported target.
@@ -154,7 +148,7 @@ A complete list of ``Find<PackageName>.cmake`` can be found from the command-lin
 
       .. tab:: Fortran
 
-         The scaffold project is in ``content/code/xx_mpi-f``.
+         The scaffold project is in ``content/code/11_mpi-f``.
 
          #. Compile the source file to an executable.
          #. Link against the MPI imported target.
@@ -192,38 +186,20 @@ The package developers might be already prepared to help you out:
        message(STATUS "Found libuuid")
      endif()
 
-  This was the strategy adopted in :ref:`probing` when testing the use of the
-  UUID library.
+  This was the strategy adopted in :ref:`probing` when testing the use of the UUID library.
 
 
 .. keypoints::
 
    - CMake has a rich ecosystem of modules for finding software dependencies. They are called ``Find<package>.cmake``.
    - The ``Find<package>.cmake`` modules are used through ``find_package(<package>)``.
-   - You can also use the classic Unix tool ``pkg-config`` to find software
-     dependencies, but this is not as robust as the CMake-native
-     ``Find<package>`` modules.
+   - You can also use the classic Unix tool ``pkg-config`` to find software dependencies, but this is not as robust as the CMake-native ``Find<package>`` modules.
 
 
 
 .. rubric:: Footnotes
 
-.. [#omp]
 
-   Example adapted from page 85 in `OpenMP 4.5 examples
-   <http://www.openmp.org/wp-content/uploads/openmp-examples-4.5.0.pdf>`_.
+.. [#omp] Example adapted from page 85 in `OpenMP 4.5 examples <http://www.openmp.org/wp-content/uploads/openmp-examples-4.5.0.pdf>`_.
 
-.. [#verbose]
-
-   The way in which to trigger a verbose build depends on the native build tool you are using.
-   For Unix Makefiles:
-
-   .. code-block:: bash
-
-      $ cmake --build build -- VERBOSE=1
-
-   For Ninja:
-
-   .. code-block:: bash
-
-      $ cmake --build build -- -v
+.. [#verbose] The way in which to trigger a verbose build depends on the native build tool you are using. For Unix Makefiles: ``$ cmake --build build -- VERBOSE=1``, and for Ninja: ``$ cmake --build build -- -v``.

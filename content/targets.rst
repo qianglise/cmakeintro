@@ -7,16 +7,17 @@ Target-based build systems with CMake
 
 .. questions::
 
-   - How can we handle more complex projects with CMake?
+   - How can we handle complex projects with CMake?
    - What exactly are **targets** in the CMake domain-specific language (DSL)?
 
 .. objectives::
 
    - Learn that the **basic elements** in CMake are not variables, but targets.
    - Learn about properties of targets and how to use them.
-   - Learn how to use *visibility levels* to express dependencies between targets.
-   - Learn how to work with projects spanning multiple folders.
+   - Learn how to use **visibility levels** to express dependencies between targets.
    - Learn how to handle multiple targets in one project.
+   - Learn how to work with projects spanning multiple folders.
+
 
 
 Real-world projects require more than compiling a few source files into executables and/or libraries. In most cases, you will come to projects comprising hundreds of source files sprawling in a complex source tree.
@@ -40,7 +41,6 @@ A target is the basic element in the CMake DSL, which can be declared by either 
    :align: center
 
     Compile options, definitions, include directories, source files, link libraries, and link options are properties of targets. These properties can be read with ``get_target_property`` and modified with ``set_target_properties``.
-
 
 
 In CMake, the five most used commands used to handle targets are:
@@ -91,83 +91,67 @@ Why it is robust to use targets and properties than using variables? Given a tar
    Properties on targets have varied **visibility levels**, which determine how CMake should propagate them between interdependent targets.
 
 
+.. typealong:: Understanding visibility levels
 
-.. callout:: Understanding visibility levels
+   Visibility levels ``PRIVATE``, ``PUBLIC``, or ``INTERFACE`` are very powerful and herein we will briefly demonstrate their difference.
 
+   A complete source code is available in the ``content/code/04_visibility-levels/`` folder.
+	
+   In this code example, we want to compile a C++ library and an executable:
 
-	Visibility levels ``PRIVATE``, ``PUBLIC``, or ``INTERFACE`` are very powerful and herein we will briefly demonstrate their difference.
-		
-	In this demo, we split the source code into 3 libraries and all files are available in the ``content/code/xx_visibility-levels/`` folder.
+      - The library code is in the ``account`` subfolder. It consists of one source (``account.cpp``) and one header file (``account.hpp``).
+      - The header file and the shared library are needed for the ``bank.cpp`` to produce the ``bank`` executable.
+      - We also want to use the ``-ffast-math`` compiler flag and propagate it throughout the project.
 
-	.. code-block:: bash
-
-	   .
-	   ├── CMakeLists.txt
-	   ├── greeting
-	   │   ├── greeting.cpp
-	   │   └── greeting.hpp
-	   ├── hello_world
-	   │   ├── hello_world.cpp
-	   │   └── hello_world.hpp
-	   ├── main.cpp
-	   └── world
-		   ├── world.cpp
-		   └── world.hpp
+   Thus code structure is arranged in the following format:
 
 
-In this source code, the main function links to greeting which links to hello_world which links to world.
+   1. The ``account`` target declares the ``account.cpp`` source file as ``PRIVATE`` since it is only needed to produce the shared library.
+
+      .. code-block:: cmake
+
+         target_sources(account
+           PRIVATE
+             account.cpp
+           )
+
+   2. The ``-ffast-math`` is instead ``PUBLIC`` as since it needs to be propagated to all targets consuming ``account``.
+
+      .. code-block:: cmake
+
+         target_compile_options(account
+           PUBLIC
+             "-ffast-math"
+           )
+
+   3. The ``account`` folder is an include directory with ``INTERFACE``
+      visibility because only targets consuming ``account`` need to know where
+      ``account.hpp`` is located.
+
+      .. code-block:: cmake
+
+         target_include_directories(account
+           INTERFACE
+             ${CMAKE_CURRENT_SOURCE_DIR}
+           )
 
 
-.. typealong:: The internal dependency tree
+.. callout:: Rule of thumb for visibility settings
 
-   If you have installed ``Graphviz``, you can visualize the dependencies between these targets:
+   When working out which visibility settings to use for the properties of your
+   targets you can refer to the following table:
 
-   .. code-block:: console
-
-      $ cd build
-      $ cmake --graphviz=project.dot ..
-      $ dot -T svg project.dot -o graphviz-greeting-hello-world.svg
-
-   .. figure:: img/graphviz-greeting-hello-world.svg
-      :align: center
-
-      The dependencies between the four targets in the code example.
- 
+      ==============  ================ ============
+        Who needs?             Others
+      --------------  -----------------------------
+       Target            **YES**           **NO**
+      ==============  ================ ============
+         **YES**         ``PUBLIC``     ``PRIVATE``
+          **NO**       ``INTERFACE``        N/A
+      ==============  ================ ============
 
 
-Take a look at the ``CMakeLists.txt``:
-
-
-.. literalinclude:: code/xx_visibility-levels/CMakeLists.txt
-   :language: cmake
-   :linenos:
-   :emphasize-lines: 17
-
-
-.. exercise:: Testing the 3 different visibility levels
-
-   1. Browse, configure, build, and run the code.
-
-   2. Uncomment the highlighted line (line 17) with ``target_compile_definitions``, configure into a fresh folder, and build using the commands below. You will see that the definition is used in ``world.cpp`` but nowhere else.
-
-      .. code-block:: console
-
-         $ cmake -S. -Bbuild_private
-         $ cmake --build build_private
-
-   3. Change the definition to ``PUBLIC``, configure into a fresh folder, and build. You will see that the definition is used both in ``world.cpp`` and ``hello_world.cpp``.
-
-      .. code-block:: console
-
-         $ cmake -S. -Bbuild_public
-         $ cmake --build build_public
-
-   4. Then change the definition to ``INTERFACE``, configure into a fresh folder, and build. You will see that the definition is used only in ``hello_world.cpp`` but not in ``world.cpp``.
-
-      .. code-block:: console
-
-         $ cmake -S. -Bbuild_interface
-         $ cmake --build build_interface
+An additional code example to demonstrate the difference of the visibility levels ``PRIVATE``, ``PUBLIC``, or ``INTERFACE`` is available in the `CodeRefinery CMake Workshop <https://coderefinery.github.io/cmake-workshop/targets/#visibility-levels>`_ lesson materials.
 
 
 
@@ -201,23 +185,88 @@ Multiple folders
 ----------------
 
 
+In the code example about the visibility levels, we have two ``CMakeLists.txt`` files, one in the ``account`` subfolder and one in the main folder. This enables the code maintenance being easier if we split the CMake configuration into multiple ``CMakeLists.txt`` with the help of ``add_subdirectory``. Our goal is to have multiple ``CMakeLists.txt`` files as close as possible to the source files.
+
+.. code-block:: text
+
+   project/
+   ├── CMakeLists.txt           <--- Root
+   ├── external
+   │   ├── CMakeLists.txt       <--- Leaf at level 1
+   └── src
+       ├── CMakeLists.txt       <--- Leaf at level 1
+       ├── evolution
+       │   ├── CMakeLists.txt   <--- Leaf at level 2
+       ├── initial
+       │   ├── CMakeLists.txt   <--- Leaf at level 2
+       ├── io
+       │   ├── CMakeLists.txt   <--- Leaf at level 2
+       └── parser
+           └── CMakeLists.txt   <--- Leaf at level 2
+
+
+Each folder in a multi-folder project will contain a ``CMakeLists.txt``: a source tree with one **root** and many **leaves**.
+
+- The root ``CMakeLists.txt`` will contain the invocation of the ``project`` command: variables and targets declared in the root have effectively global scope.
+- The ``PROJECT_SOURCE_DIR`` will point to the folder containing the root ``CMakeLists.txt``.
+- In order to move between the root and a leaf or between leaves, you will use the ``add_subdirectory`` command.
 
 
 
+Typically, you only need to pass the first argument: the folder within the build tree will be automatically computed by CMake. We can declare targets at any level, not necessarily the root: a target is visible at the level at which it is declared and all higher levels.
 
 
 
+.. exercise:: Exercise 05: Cellular automata
+
+   Let's work with a project spanning multiple folders. We will implement a relatively simple code to compute and print to screen elementary `cellular automata <https://en.wikipedia.org/wiki/Cellular_automaton#Elementary_cellular_automata>`_. We separate the sources into ``src`` and ``external`` to simulate a nested project which reuses an external project.
+
+   Your goal is to:
+
+   - 1. Build the main executable at ``content/code/05_automata/cxx/`` for C++ and ``content/code/05_automata/fortran/`` for Fortran.
+   - 2. Where are the obtained executables located in the build tree? Remember that CMake generates a build tree mirroring the source tree.
+   - 3. The executable will accept 3 arguments: the length, number of steps, and
+     automaton rule. You can run it with:
+
+     .. code-block:: bash
+
+        $ automata 40 5 30
+
+     The output will be:
+
+     .. code-block:: text
+
+        length: 40
+        number of steps: 5
+        rule: 30
+                            *
+                           ***
+                          **  *
+                         ** ****
+                        **  *   *
+                       ** **** ***
+
+   .. typealong:: The internal dependency tree
+
+      You can visualize the dependencies between targets in the project with Graphviz (make sure that you have installed the Graphviz package):
+
+      .. code-block:: bash
+
+         $ cd build
+         $ cmake --graphviz=project.dot ..
+         $ dot -T svg project.dot -o project.svg
+
+      .. figure:: img/graphviz-multiple-folder-project.svg
+         :align: center
+
+         The dependencies between targets in the cellular automata project.
 
 
 
+.. keypoints::
 
-
-
-
-
-
-
-
-
-
+   - Using **targets**, you can achieve granular control over how artifacts are built and how their dependencies are handled.
+   - Compiler flags, definitions, source files, include folders, link libraries, and linker options are **properties** of a target.
+   - Avoid using variables to express dependencies between targets: use visibility levels ``PRIVATE``, ``INTERFACE``, ``PUBLIC`` and let CMake figure out the details.
+   - To keep the complexity of the build system at a minimum, each folder in a multi-folder project should have its own CMake script.
 
